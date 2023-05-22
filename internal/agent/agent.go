@@ -176,7 +176,7 @@ func CollectMetrics() []Metric {
 
 func SendMetrics(cfg *config.Config, metrics []Metric) error {
 	for _, m := range metrics {
-		r, err := http.Post(
+		_, err := http.Post(
 			fmt.Sprintf(
 				"http://%s:%s/update/%s/%s/%s",
 				cfg.Server.Address,
@@ -191,7 +191,6 @@ func SendMetrics(cfg *config.Config, metrics []Metric) error {
 		if err != nil {
 			return err
 		}
-		fmt.Println(r)
 	}
 	return nil
 }
