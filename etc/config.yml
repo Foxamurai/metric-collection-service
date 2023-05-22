@@ -1,0 +1,7 @@
+agent:
+  pollInterval: "*/2 * * * * *"
+  reportInterval: "*/10 * * * * *"
+
+server:
+  address: "127.0.0.1"
+  port: "8080"
