@@ -176,7 +176,7 @@ func CollectMetrics() []Metric {
 
 func SendMetrics(cfg *config.Config, metrics []Metric) error {
 	for _, m := range metrics {
-		_, err := http.Post(
+		r, err := http.Post(
 			fmt.Sprintf(
 				"http://%s:%s/update/%s/%s/%s",
 				cfg.Server.Address,
@@ -188,6 +188,7 @@ func SendMetrics(cfg *config.Config, metrics []Metric) error {
 			"text/plain",
 			nil,
 		)
+		r.Body.Close()
 		if err != nil {
 			return err
 		}
