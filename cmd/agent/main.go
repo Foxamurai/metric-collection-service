@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/robfig/cron/v3"
 	"metric-collection-service/internal/agent"
 	"metric-collection-service/internal/config"
 )
@@ -20,17 +19,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var metrics []agent.Metric
-
-	c := cron.New(cron.WithSeconds())
-	_, err = c.AddFunc(cfg.Agent.PollInterval, func() { metrics = agent.CollectMetrics() })
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = c.AddFunc(cfg.Agent.ReportInterval, func() { err = agent.SendMetrics(cfg, metrics) })
-	if err != nil {
-		log.Fatal(err)
-	}
-	c.Start()
-	select {}
+	a := agent.Init(cfg)
+	log.Fatal(a.Run())
 }

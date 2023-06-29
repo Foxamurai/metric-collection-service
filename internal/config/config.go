@@ -3,12 +3,15 @@ package config
 import (
 	"os"
 
+	"metric-collection-service/internal/model"
+
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	Agent  Agent  `yaml:"agent"`
-	Server Server `yaml:"server"`
+	Agent   Agent   `yaml:"agent"`
+	Server  Server  `yaml:"server"`
+	Storage Storage `yaml:"storage"`
 }
 type Agent struct {
 	PollInterval   string `yaml:"pollInterval"`
@@ -18,6 +21,10 @@ type Agent struct {
 type Server struct {
 	Address string `yaml:"address"`
 	Port    string `yaml:"port"`
+}
+
+type Storage struct {
+	Type model.StorageType `yaml:"type"`
 }
 
 var config *Config

@@ -2,12 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"metric-collection-service/internal/config"
+	"metric-collection-service/internal/server"
+	"metric-collection-service/internal/server/storage"
 )
 
 func main() {
@@ -20,10 +20,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.HandleFunc("/", MetricsHandler)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.Server.Address, cfg.Server.Port), nil))
-}
-
-func MetricsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL)
+	var stg storage.BaseStorage = storage.Init()
+	srv := server.Init(cfg, &stg)
+	log.Fatal(srv.Run())
 }
